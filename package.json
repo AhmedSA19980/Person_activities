@@ -1,0 +1,19 @@
+{
+  "name": "typescriptproject",
+  "version": "1.0.0",
+  "description": "post app",
+  
+  "scripts": {
+    "start": "parcel  src/pages/main.html",
+    "build": "parcel  build src/pages/index.html --public-url ./",
+    "type-check": "tsc  --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.15.2",
+    "typescript": "^5.8.3"
+  }
+}
