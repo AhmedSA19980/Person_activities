@@ -6,7 +6,7 @@ import { Data } from "../../data/data";
 import { userList } from "element/List";
 import { SearchInput } from "element/search";
 import { Search } from "module/search/search";
-import { displayUserInfo } from "./user";
+import { User } from "./user";
 
 export class DisplayUserInfo implements DisplayForm<IUser> {
   private AllUsers: IUser[] = [];
@@ -32,6 +32,9 @@ export class DisplayUserInfo implements DisplayForm<IUser> {
   }
 
   display(users: IUser[]): void {
+    
+
+
     if (userList == null) return;
 
     userList!.innerHTML = "";
@@ -45,32 +48,23 @@ export class DisplayUserInfo implements DisplayForm<IUser> {
     users.forEach((user: IUser) => {
       const listItem = document.createElement("li"); // Creates an <li> element
       //  console.log("users", user);
-      // console.log("allu");
+      // co0nsole.log("allu");
       listItem.className = "user-item";
       listItem.innerHTML = `
-                 <a href='${'../../pages/user/user.html?=' + user.id}'>
+                 <a  href="/user/user.html?userId=${user.id}">
                 <strong >${user.username}</strong></a><br>
                 Email: ${user.email}<br>
-                City: ${user.address?.city ||  "N/A"}
-                
+                City: ${user.address?.city || "N/A"}
+                 
             `;
-      listItem.dataset.id = user.id.toString();
+        
     
       userList!.appendChild(listItem); // Appends the <li> to the <ul>
-      this.SaveState(listItem , user.id);
-      //displayUserInfo(user.id);
     });
-  }
-
-  SaveState(element : HTMLElement , id:number
-
-  ){
-    element.addEventListener("click", ()=>{
-      window.location.href = `../../pages/user/user.html=${id}`
-    })
-
+   
 
   }
+
 
   async DisplayUsers(): Promise<void> {
     this.load();
@@ -84,6 +78,8 @@ export class DisplayUserInfo implements DisplayForm<IUser> {
     }
     return null;
   }
+
+
 
   initialize() {
     this.load(); // Fetch users when the app starts
