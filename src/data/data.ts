@@ -1,40 +1,5 @@
-interface Address {
-  street: string;
-  suite: string;
-  city: string;
-  zipcode: string;
-  geo: {
-    lat: string;
-    lng: string;
-  };
-}
-
-interface Company {
-  name: string;
-  catchPhrase: string;
-  bs: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: Address;
-  phone: string;
-  website: string;
-  company: Company;
-}
-
-const userList = document.getElementById(
-  "user-list"
-) as HTMLUListElement | null;
-const loadingMessage = document.getElementById(
-  "loading-message"
-) as HTMLParagraphElement | null;
-const errorMessage = document.getElementById(
-  "error-message"
-) as HTMLParagraphElement | null;
+import { errorMessage } from "element/error";
+import { loadingMessage } from "element/load";
 
 export class Data<T> {
   async FetchData(subUrl: string): Promise<T[]> {
@@ -58,7 +23,7 @@ export class Data<T> {
 
       // Hide loading message
       loadingMessage!.style.display = "none";
-      console.log("data", data);
+//      console.log("data", data);
       return data;
     } catch (error: any) {
       // Explicitly type 'error' as 'any' or 'unknown' for catch block
