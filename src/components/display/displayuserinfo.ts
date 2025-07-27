@@ -1,21 +1,22 @@
 import DisplayForm from "../../interface/display";
-import User from "../../interface/user";
+import IUser from "../../interface/user";
 import { errorMessage } from "../../element/error";
 import { loadingMessage } from "../../element/load";
 import { Data } from "../../data/data";
 import { userList } from "element/List";
 import { SearchInput } from "element/search";
 import { Search } from "module/search/search";
+import { User } from "./user";
 
-export class DisplayUserInfo implements DisplayForm<User> {
-  private AllUsers: User[] = [];
+export class DisplayUserInfo implements DisplayForm<IUser> {
+  private AllUsers: IUser[] = [];
 
   constructor() {
     this.initialize();
   }
 
-  async load(): Promise<User[]> {
-    const Users = new Data<User>();
+  async load(): Promise<IUser[]> {
+    const Users = new Data<IUser>();
     document.addEventListener("DOMContentLoaded", async () => {
       console.log("DOM fully loaded and parsed. Fetching users...");
 
@@ -26,12 +27,14 @@ export class DisplayUserInfo implements DisplayForm<User> {
         return this.display(this.AllUsers);
       }
     });
-    
+
     return [];
   }
 
-  
-  display(users: User[]): void {
+  display(users: IUser[]): void {
+    
+
+
     if (userList == null) return;
 
     userList!.innerHTML = "";
@@ -42,27 +45,30 @@ export class DisplayUserInfo implements DisplayForm<User> {
       //return;
     }
 
-   
-
-    users.forEach((user : User) => {
+    users.forEach((user: IUser) => {
       const listItem = document.createElement("li"); // Creates an <li> element
-    //  console.log("users", user);
-     // console.log("allu");
-     listItem.className = "user-item";
+      //  console.log("users", user);
+      // co0nsole.log("allu");
+      listItem.className = "user-item";
       listItem.innerHTML = `
-                <strong >${user.username}</strong><br>
+                 <a  href="/user/user.html?userId=${user.id}">
+                <strong >${user.username}</strong></a><br>
                 Email: ${user.email}<br>
                 City: ${user.address?.city || "N/A"}
+                 
             `;
+        
+    
       userList!.appendChild(listItem); // Appends the <li> to the <ul>
     });
+   
+
   }
+
 
   async DisplayUsers(): Promise<void> {
-     this.load();
+    this.load();
   }
-
-
 
   errorMessage(): never | null {
     if (!userList || !loadingMessage || !errorMessage) {
@@ -72,6 +78,8 @@ export class DisplayUserInfo implements DisplayForm<User> {
     }
     return null;
   }
+
+
 
   initialize() {
     this.load(); // Fetch users when the app starts
@@ -85,8 +93,8 @@ export class DisplayUserInfo implements DisplayForm<User> {
       const SearchText: string = searchValueElement.value.trim();
       const listItem = document.createElement("li");
       const userInput = new Search();
-      let searchProperty: keyof User;
-      
+      let searchProperty: keyof IUser;
+
       if (SearchText.length == 0) {
         await this.display(this.AllUsers);
         return;
@@ -104,12 +112,11 @@ export class DisplayUserInfo implements DisplayForm<User> {
 
       console.log(`Searching by ${searchProperty} for: "${SearchInput}"`);
 
-
       const searchResult = userInput.Search(
         searchProperty,
         SearchText,
         this.AllUsers
-      ) as User[];
+      ) as IUser[];
 
       this.display(searchResult);
     });
